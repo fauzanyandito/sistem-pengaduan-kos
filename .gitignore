@@ -1,0 +1,43 @@
+# Dependensi Node
+node_modules/
+
+# Log
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Laporan Diagnostik
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Data Runtime
+pids/
+*.seed
+*.pid.lock
+
+# Direktori Coverage & Test
+coverage/
+*.lcov
+.nyc_output/
+
+# Build Artefak
+dist/
+build/
+
+# Variabel Lingkungan & Rahasia (PENTING!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# File Konfigurasi OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# dokumen
+docs/*
