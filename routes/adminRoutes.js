@@ -43,8 +43,13 @@ router.get('/admin/pengaduan/:id', isLoggedIn, isAdmin, async (req, res) => {
 router.post('/admin/pengaduan/:id', isLoggedIn, isAdmin, async (req, res) => {
   try {
     const { status, tanggapan_admin } = req.body;
-    await PengaduanModel.updateStatus(req.params.id, { status, tanggapan_admin });
-    res.redirect('/admin/pengaduan/' + req.params.id);
+
+    await PengaduanModel.updateStatus(req.params.id, {
+      status,
+      tanggapan_admin
+    });
+
+    res.redirect('/admin/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).send('Terjadi kesalahan server.');
