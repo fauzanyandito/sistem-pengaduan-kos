@@ -1,0 +1,139 @@
+<% var title = 'Dashboard Penghuni - Sistem Pengaduan Kos' %>
+<%- include('../partials/header') %>
+
+<%
+// Mapping kategori -> ikon emoji & warna untuk overview laporan
+function kategoriIcon(kategori) {
+  const map = {
+    'Kebersihan': { icon: 'broom', class: 'icon-hijau' },
+    'Kerusakan Fasilitas': { icon: 'bed', class: 'icon-ungu' },
+    'Hama/Serangga': { icon: 'bug', class: 'icon-cokelat' },
+    'Air & Sanitasi': { icon: 'droplet', class: 'icon-biru' },
+    'Keamanan': { icon: 'lock', class: 'icon-merah' },
+    'Lainnya': { icon: 'list', class: 'icon-abu' }
+  };
+
+  return map[kategori] || map['Lainnya'];
+}
+
+function labelStatus(status) {
+  if (status === 'menunggu') return 'Menunggu';
+  if (status === 'diproses') return 'Diproses';
+  return 'Selesai';
+}
+
+function labelPrioritas(prioritas) {
+  return prioritas || 'Sedang';
+}
+%>
+
+<div class="page-header">
+  <h1>Selamat Datang, <%= user.nama %>!</h1>
+  <a href="/pengaduan/baru" class="btn">+ Buat Pengaduan</a>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="label label-muted">TOTAL PENGADUAN ANDA</div>
+    <div class="number"><%= statistik.total %> Kasus</div>
+    <div class="desc">Semua riwayat laporan terdaftar dalam sistem.</div>
+    <div class="progress-bar"><div class="progress-fill progress-total" data-width="100"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="label label-muted">SEDANG DIPROSES PEMILIK</div>
+    <div class="number number-blue"><%= statistik.diproses %> Laporan</div>
+    <div class="desc">Sedang ditindaklanjuti atau dikerjakan tukang.</div>
+    <div class="progress-bar">
+      <%
+        const pctDiproses = statistik.total > 0 ? Math.round((statistik.diproses / statistik.total) * 100) : 0;
+      %>
+      <div class="progress-fill progress-blue" data-width="<%= pctDiproses %>"></div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="label label-muted">SELESAI DIPERBAIKI</div>
+    <div class="number number-green"><%= statistik.selesai %> Masalah</div>
+    <div class="desc">Terima kasih atas laporannya guna merawat kos!</div>
+    <div class="progress-bar">
+      <%
+        const pctSelesai = statistik.total > 0 ? Math.round((statistik.selesai / statistik.total) * 100) : 0;
+      %>
+      <div class="progress-fill progress-green" data-width="<%= pctSelesai %>"></div>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="dashboard-main">
+    <div class="section-header">
+      <h2>Overview Laporan Terakhir Anda</h2>
+      <a href="/riwayat" class="link-lihat-semua">Lihat semua &rarr;</a>
+    </div>
+
+    <% if (laporanTerbaru.length === 0) { %>
+      <div class="empty-state">
+        <p>Belum ada pengaduan yang kamu buat.</p>
+        <p>Kalau ada masalah di kamar (atap bocor, ada serangga, dll), yuk laporkan!</p>
+      </div>
+    <% } else { %>
+      <% laporanTerbaru.forEach(function(p) {
+           const k = kategoriIcon(p.kategori);
+           const prioritas = labelPrioritas(p.prioritas);
+      %>
+        <a href="/pengaduan/<%= p.id %>" class="pengaduan-card">
+          <div class="pengaduan-icon <%= k.class %>"><i class="fa-solid fa-<%= k.icon %>"></i></div>
+
+          <div class="info">
+            <h3><%= p.judul %></h3>
+            <div class="meta">
+              Kamar <%= user.no_kamar || '-' %> &middot; <%= p.kategori %>
+              &middot; Prioritas:
+              <span class="badge-prioritas <%= prioritas.toLowerCase() %>">
+                <%= prioritas %>
+              </span>
+            </div>
+          </div>
+
+          <span class="badge badge-<%= p.status %>"><%= labelStatus(p.status) %></span>
+          <span class="card-arrow">&rarr;</span>
+        </a>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <div class="dashboard-side">
+    <div class="info-panel">
+
+    <div class="info-header">
+    <div class="info-header-icon">
+      <h2>Berita &amp; Informasi Kos</h2>
+      <% if (pengumuman.length === 0) { %>
+        <p class="muted">Belum ada pengumuman dari pemilik kos.</p>
+      <% } else { %>
+        <% pengumuman.forEach(function(p) { %>
+          <div class="info-item info-item-<%= p.tipe %>">
+            <h4>
+              <% if (p.tipe === 'peringatan') { %>
+                <i class="fa-solid fa-triangle-exclamation icon-warning"></i>
+              <% } else if (p.tipe === 'pengumuman') { %>
+                <i class="fa-solid fa-bullhorn icon-announcement"></i>
+              <% } else { %>
+                <i class="fa-solid fa-circle-info icon-info"></i>
+              <% } %>
+              <%= p.judul.toUpperCase() %>
+            </h4>
+            <p><%= p.isi %></p>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.progress-fill[data-width]').forEach(function (el) {
+    el.style.width = el.getAttribute('data-width') + '%';
+  });
+</script>
+
+<%- include('../partials/footer') %>

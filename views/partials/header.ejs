@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    <%= typeof title !== 'undefined' ? title : 'Sistem Pengaduan Kos' %>
+  </title>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <i class="fa-solid fa-house"></i>
+    Sistem Pengaduan Kos
+  </div>
+
+  <div class="navbar-menu">
+
+    <% if (user) { %>
+
+      <% if (user.role === 'penghuni') { %>
+
+      <% } else { %>
+
+      <% } %>
+
+      <span class="navbar-user">
+        <i class="fa-solid fa-user"></i>
+        Halo, <%= user.nama %>
+        <small>(<%= user.role %>)</small>
+      </span>
+
+      <form action="/logout" method="POST" style="display:inline;">
+        <button type="submit" class="btn-link">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </form>
+
+    <% } else { %>
+
+    <% } %>
+
+  </div>
+</nav>
+
+<!-- BODY WRAPPER -->
+<% if (user) { %>
+  <div class="app-body">
+    <%- include('./sidebar') %>
+    <main class="container">
+<% } else { %>
+  <main class="container">
+<% } %>

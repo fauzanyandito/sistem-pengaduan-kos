@@ -1,0 +1,77 @@
+<% var title = 'Detail Pengaduan - Admin' %>
+<%- include('../partials/header') %>
+
+<%
+function labelPrioritas(prioritas) {
+  return prioritas || 'Sedang';
+}
+
+const prioritas = labelPrioritas(pengaduan.prioritas);
+%>
+
+<a href="/admin/dashboard" class="back-link">&larr; Kembali ke Dashboard Admin</a>
+
+<div class="detail-box">
+  <div class="page-header">
+    <h2><%= pengaduan.judul %></h2>
+
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <span class="badge-prioritas <%= prioritas.toLowerCase() %>">
+        <%= prioritas %>
+      </span>
+
+      <span class="badge badge-<%= pengaduan.status %>">
+        <% if (pengaduan.status === 'menunggu') { %>Menunggu
+        <% } else if (pengaduan.status === 'diproses') { %>Diproses
+        <% } else { %>Selesai
+        <% } %>
+      </span>
+    </div>
+  </div>
+
+  <div class="detail-meta">
+    Dilaporkan oleh <strong><%= pengaduan.nama_pelapor %></strong>
+    (Kamar <%= pengaduan.no_kamar || '-' %><% if (pengaduan.no_hp) { %>, HP: <%= pengaduan.no_hp %><% } %>)
+    &middot; Kategori: <%= pengaduan.kategori %>
+    &middot; Prioritas:
+    <span class="badge-prioritas <%= prioritas.toLowerCase() %>">
+      <%= prioritas %>
+    </span>
+    &middot; <%= new Date(pengaduan.created_at).toLocaleString('id-ID') %>
+  </div>
+
+  <div class="detail-section">
+    <h4>Deskripsi</h4>
+    <p><%= pengaduan.deskripsi %></p>
+  </div>
+
+  <% if (pengaduan.foto) { %>
+    <div class="detail-section">
+      <h4>Foto Bukti</h4>
+      <img src="/uploads/<%= pengaduan.foto %>" alt="Foto bukti pengaduan">
+    </div>
+  <% } %>
+
+  <hr style="margin: 20px 0; border: none; border-top: 1px solid #ecf0f1;">
+
+  <h4 style="margin-bottom: 12px;">Tindak Lanjut</h4>
+  <form action="/admin/pengaduan/<%= pengaduan.id %>" method="POST">
+    <div class="form-group">
+      <label for="status">Status Pengaduan</label>
+      <select id="status" name="status" required>
+        <option value="menunggu" <%= pengaduan.status === 'menunggu' ? 'selected' : '' %>>Menunggu</option>
+        <option value="diproses" <%= pengaduan.status === 'diproses' ? 'selected' : '' %>>Diproses</option>
+        <option value="selesai" <%= pengaduan.status === 'selesai' ? 'selected' : '' %>>Selesai</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="tanggapan_admin">Tanggapan untuk Penghuni</label>
+      <textarea id="tanggapan_admin" name="tanggapan_admin" rows="4" placeholder="Contoh: Sudah dijadwalkan perbaikan besok pagi."><%= pengaduan.tanggapan_admin || '' %></textarea>
+    </div>
+
+    <button type="submit" class="btn">Simpan Perubahan</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

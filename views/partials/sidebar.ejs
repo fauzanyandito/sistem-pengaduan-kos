@@ -1,0 +1,40 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="/uploads/logo.png" alt="Logo" class="brand-logo">
+    <div>
+      <div class="sidebar-brand-title">Sistem Pengaduan Kos</div>
+      <div class="sidebar-brand-sub">Halo, <%= user.nama %></div>
+    </div>
+  </div>
+
+  <div class="sidebar-section-title">Menu Utama</div>
+  <nav class="sidebar-menu">
+    <% if (user.role === 'penghuni') { %>
+      <a href="/dashboard" class="sidebar-item <%= activePage === 'dashboard' ? 'active' : '' %>">
+        <span class="sidebar-item-icon"></span> Dashboard
+      </a>
+      <a href="/pengaduan/baru" class="sidebar-item <%= activePage === 'lapor' ? 'active' : '' %>">
+        <span class="sidebar-item-icon"></span> Lapor Masalah Baru
+      </a>
+      <a href="/riwayat" class="sidebar-item <%= activePage === 'riwayat' ? 'active' : '' %>">
+        <span class="sidebar-item-icon"></span> Riwayat &amp; Status
+      </a>
+    <% } else { %>
+      <a href="/admin/dashboard" class="sidebar-item <%= activePage === 'dashboard' ? 'active' : '' %>">
+        <span class="sidebar-item-icon"></span> Dashboard
+      </a>
+      <a href="/admin/pengumuman" class="sidebar-item <%= activePage === 'pengumuman' ? 'active' : '' %>">
+        <span class="sidebar-item-icon"></span> Berita &amp; Informasi
+      </a>
+    <% } %>
+  </nav>
+
+  <% if (typeof ownerContact !== 'undefined' && ownerContact) { %>
+    <div class="sidebar-section-title">Status Terkini</div>
+    <div class="emergency-box">
+      <div class="emergency-title">Darurat Owner / Penjaga</div>
+      <div class="emergency-name"><%= ownerContact.nama %></div>
+      <div class="emergency-phone"><%= ownerContact.no_hp || 'No. HP belum diisi' %></div>
+    </div>
+  <% } %>
+</aside>

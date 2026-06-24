@@ -1,0 +1,66 @@
+<% var title = 'Riwayat & Status - Sistem Pengaduan Kos' %>
+<%- include('../partials/header') %>
+
+<%
+function kategoriIcon(kategori) {
+  const map = {
+    'Kebersihan': { icon: 'broom', class: 'icon-hijau' },
+    'Kerusakan Fasilitas': { icon: 'bed', class: 'icon-ungu' },
+    'Hama/Serangga': { icon: 'bug', class: 'icon-cokelat' },
+    'Air & Sanitasi': { icon: 'droplet', class: 'icon-biru' },
+    'Keamanan': { icon: 'lock', class: 'icon-merah' },
+    'Lainnya': { icon: 'list', class: 'icon-abu' }
+  };
+
+  return map[kategori] || map['Lainnya'];
+}
+
+function labelStatus(status) {
+  if (status === 'menunggu') return 'Menunggu';
+  if (status === 'diproses') return 'Diproses';
+  return 'Selesai';
+}
+
+function labelPrioritas(prioritas) {
+  return prioritas || 'Sedang';
+}
+%>
+
+<div class="page-header">
+  <h1>Riwayat &amp; Status Pengaduan</h1>
+  <a href="/pengaduan/baru" class="btn">+ Buat Pengaduan</a>
+</div>
+
+<% if (daftarPengaduan.length === 0) { %>
+  <div class="empty-state">
+    <p>Belum ada pengaduan yang kamu buat.</p>
+    <p>Kalau ada masalah di kamar (atap bocor, ada serangga, dll), yuk laporkan!</p>
+  </div>
+<% } else { %>
+  <% daftarPengaduan.forEach(function(p) {
+       const k = kategoriIcon(p.kategori);
+       const prioritas = labelPrioritas(p.prioritas);
+  %>
+    <a href="/pengaduan/<%= p.id %>" class="pengaduan-card">
+      <div class="pengaduan-icon <%= k.class %>"><i class="fa-solid fa-<%= k.icon %>"></i></div>
+      
+      <div class="info">
+        <h3><%= p.judul %></h3>
+        <div class="meta">
+          Kategori: <%= p.kategori %> &middot;
+          Prioritas:
+          <span class="badge-prioritas <%= prioritas.toLowerCase() %>">
+            <%= prioritas %>
+          </span>
+          &middot;
+          Dilaporkan: <%= new Date(p.created_at).toLocaleString('id-ID') %>
+        </div>
+      </div>
+
+      <span class="badge badge-<%= p.status %>"><%= labelStatus(p.status) %></span>
+      <span class="card-arrow">&rarr;</span>
+    </a>
+  <% }) %>
+<% } %>
+
+<%- include('../partials/footer') %>

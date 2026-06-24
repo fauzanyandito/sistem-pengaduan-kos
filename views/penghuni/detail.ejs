@@ -1,0 +1,133 @@
+<% var title = 'Detail Pengaduan - Sistem Pengaduan Kos' %>
+<%- include('../partials/header') %>
+
+<%
+function labelPrioritas(prioritas) {
+  return prioritas || 'Sedang';
+}
+const prioritas = labelPrioritas(pengaduan.prioritas);
+
+const steps = [
+  {
+    key: 'menunggu',
+    label: 'Dilaporkan',
+    icon: '<i class="fa-solid fa-file-circle-check"></i>',
+    desc: 'Pengaduan kamu sudah diterima sistem.'
+  },
+  {
+    key: 'diproses',
+    label: 'Diproses',
+    icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
+    desc: pengaduan.tanggapan_admin || 'Sedang ditindaklanjuti oleh admin.'
+  },
+  {
+    key: 'selesai',
+    label: 'Selesai',
+    icon: '<i class="fa-solid fa-circle-check"></i>',
+    desc: pengaduan.status === 'selesai'
+      ? 'Masalah telah diselesaikan.'
+      : 'Estimasi penyelesaian segera.'
+  }
+];
+
+const statusOrder = ['menunggu', 'diproses', 'selesai'];
+const currentIndex = statusOrder.indexOf(pengaduan.status);
+%>
+
+<a href="/riwayat" class="back-link">&larr; Kembali ke Riwayat</a>
+
+<div class="detail-box">
+
+  <!-- JUDUL & BADGE -->
+  <div class="page-header">
+    <h2><%= pengaduan.judul %></h2>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span class="badge-prioritas <%= prioritas.toLowerCase() %>"><%= prioritas %></span>
+      <span class="badge badge-<%= pengaduan.status %>">
+        <% if (pengaduan.status === 'menunggu') { %>Menunggu
+        <% } else if (pengaduan.status === 'diproses') { %>Diproses
+        <% } else { %>Selesai<% } %>
+      </span>
+    </div>
+  </div>
+
+  <div class="detail-meta">
+    Kategori: <%= pengaduan.kategori %>
+    &middot; Dilaporkan pada <%= new Date(pengaduan.created_at).toLocaleString('id-ID') %>
+  </div>
+
+  <!-- TIMELINE STATUS LAPORAN -->
+  <div class="detail-section">
+    <h4>Status Laporan</h4>
+    <div class="timeline">
+      <% steps.forEach(function(step, i) {
+        let state = '';
+        if (i < currentIndex) state = 'done';
+        else if (i === currentIndex) state = 'active';
+        else state = 'pending';
+      %>
+        <div class="timeline-item <%= state %>">
+          <div class="timeline-icon">
+            <% if (state === 'done') { %>
+              <i class="fa-solid fa-circle-check"></i>
+              <% } else if (state === 'active') { %>
+                <%- step.icon %>
+                <% } else { %>
+                  <i class="fa-regular fa-circle"></i>
+                  <% } %>
+                </div>
+          <div class="timeline-content">
+            <div class="timeline-label"><%= step.label %></div>
+            <% if (state !== 'pending') { %>
+              <% if (i === 0) { %>
+                <div class="timeline-time">
+                  <%= new Date(pengaduan.created_at).toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) %>,
+                  <%= new Date(pengaduan.created_at).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) %>
+                </div>
+              <% } %>
+              <% if (i === 1 && pengaduan.updated_at) { %>
+                <div class="timeline-time">
+                  <%= new Date(pengaduan.updated_at).toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) %>,
+                  <%= new Date(pengaduan.updated_at).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) %>
+                </div>
+              <% } %>
+              <div class="timeline-desc"><em><%= step.desc %></em></div>
+            <% } %>
+          </div>
+        </div>
+        <% if (i < steps.length - 1) { %>
+          <div class="timeline-line <%= i < currentIndex ? 'line-done' : '' %>"></div>
+        <% } %>
+      <% }) %>
+    </div>
+  </div>
+
+  <!-- DESKRIPSI -->
+  <div class="detail-section">
+    <h4>Deskripsi</h4>
+    <p><%= pengaduan.deskripsi %></p>
+  </div>
+
+  <!-- FOTO BUKTI -->
+  <% if (pengaduan.foto) { %>
+    <div class="detail-section">
+      <h4>Foto Bukti</h4>
+      <img src="/uploads/<%= pengaduan.foto %>" alt="Foto bukti pengaduan">
+    </div>
+  <% } %>
+
+  <!-- TANGGAPAN ADMIN -->
+  <div class="detail-section">
+    <h4>Tanggapan Admin</h4>
+    <% if (pengaduan.tanggapan_admin) { %>
+      <div class="tanggapan-box">
+        <p><%= pengaduan.tanggapan_admin %></p>
+      </div>
+    <% } else { %>
+      <p style="color:#95a5a6;">Belum ada tanggapan dari admin.</p>
+    <% } %>
+  </div>
+
+</div>
+
+<%- include('../partials/footer') %>

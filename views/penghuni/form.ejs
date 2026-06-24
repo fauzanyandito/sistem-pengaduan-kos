@@ -1,0 +1,59 @@
+<% var title = 'Buat Pengaduan - Sistem Pengaduan Kos' %>
+<%- include('../partials/header') %>
+
+<a href="/dashboard" class="back-link">&larr; Kembali ke Dashboard</a>
+
+<div class="page-header">
+  <h1>Buat Pengaduan Baru</h1>
+</div>
+
+<div class="detail-box">
+  <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <form action="/pengaduan" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="kategori">Kategori Masalah</label>
+      <select id="kategori" name="kategori" required>
+        <option value="">-- Pilih kategori --</option>
+        <option value="Kebersihan">Kebersihan</option>
+        <option value="Kerusakan Fasilitas">Kerusakan Fasilitas (atap bocor, listrik, AC, dll)</option>
+        <option value="Hama/Serangga">Hama / Serangga</option>
+        <option value="Air & Sanitasi">Air & Sanitasi</option>
+        <option value="Keamanan">Keamanan</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="prioritas">Prioritas Pengaduan</label>
+      <select name="prioritas" id="prioritas" required>
+        <option value="Rendah">Rendah</option>
+        <option value="Sedang" selected>Sedang</option>
+        <option value="Tinggi">Tinggi</option>
+        <option value="Darurat">Darurat</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="judul">Judul Pengaduan</label>
+      <input type="text" id="judul" name="judul" placeholder="Contoh: Atap kamar A-12 bocor saat hujan" required>
+    </div>
+
+    <div class="form-group">
+      <label for="deskripsi">Deskripsi Lengkap</label>
+      <textarea id="deskripsi" name="deskripsi" rows="5" placeholder="Jelaskan masalahnya secara detail, sejak kapan terjadi, dan dampaknya..." required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="foto">Foto Bukti (opsional)</label>
+      <input type="file" id="foto" name="foto" accept="image/*">
+      <small>Format: JPG, PNG, WEBP. Maksimal 2MB.</small>
+    </div>
+
+    <button type="submit" class="btn">Kirim Pengaduan</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,47 @@
+<% var title = 'Daftar - Sistem Pengaduan Kos' %>
+<%- include('../partials/header') %>
+
+<div class="auth-wrapper">
+  <div class="auth-box">
+    <h2>Daftar Akun Penghuni</h2>
+    <p class="subtitle">Buat akun untuk mulai melaporkan masalah di kamar kos kamu.</p>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form action="/register" method="POST">
+      <div class="form-group">
+        <label for="nama">Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" placeholder="Nama kamu" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="no_kamar">Nomor Kamar</label>
+        <input type="text" id="no_kamar" name="no_kamar" placeholder="Contoh: A-12">
+      </div>
+      <div class="form-group">
+        <label for="no_hp">Nomor HP (opsional)</label>
+        <input type="text" id="no_hp" name="no_hp" placeholder="08xxxxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Minimal 6 karakter" required>
+      </div>
+      <div class="form-group">
+        <label for="konfirmasi_password">Konfirmasi Password</label>
+        <input type="password" id="konfirmasi_password" name="konfirmasi_password" placeholder="Ulangi password" required>
+      </div>
+      <button type="submit" class="btn btn-full">Daftar</button>
+    </form>
+
+    <p class="switch-link">
+      Sudah punya akun? <a href="/login">Login di sini</a>
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
