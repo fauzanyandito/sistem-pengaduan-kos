@@ -106,19 +106,7 @@ Lalu buka browser ke: **http://localhost:3000**
 
 ---
 
-## 4. Pengembangan Lanjutan (Opsional, untuk nilai tambah)
-
-Beberapa ide jika ingin mengembangkan lebih lanjut:
-- Notifikasi email/WhatsApp ketika status pengaduan berubah
-- Filter & pencarian pengaduan berdasarkan kategori/tanggal
-- Export laporan pengaduan ke PDF/Excel
-- Halaman profil untuk edit data penghuni
-- Multiple foto per pengaduan
-- Komentar/diskusi dua arah antara penghuni dan admin
-
----
-
-## 5. Troubleshooting
+## 4. Troubleshooting
 
 - **Error `ER_ACCESS_DENIED_ERROR` / koneksi database gagal**
   Cek kembali `DB_USER` dan `DB_PASSWORD` di file `.env`, sesuaikan
