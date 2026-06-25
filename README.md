@@ -116,4 +116,4 @@ Lalu buka browser ke: **http://localhost:3000**
   Pastikan sudah import `database.sql` terlebih dahulu.
 
 - **Foto tidak muncul**
-  Pastikan folder `public/uploads` ada dan aplikasi punya izin tulis ke folder tersebut.
+  Pastikan folder `public/uploads` ada dan aplikasi punya izin tulis ke folder tersebut. Dan itu harus berjalan
