@@ -12,7 +12,7 @@ menghubungi pemilik kos lewat WhatsApp.
 - Andhika Maulana Dyas S (202451161)
 - Ahmad Fauzan (202451168)
 - Noverdo Rizqi (202451169)
-- M. Rizki Fatur Rohman (202451173)
+- M. Rizki Fathur Rohman (202451173)
 
 ## 1. Struktur Folder
 
