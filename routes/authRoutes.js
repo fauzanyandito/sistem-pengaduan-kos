@@ -9,7 +9,8 @@ router.get('/login', (req, res) => {
   if (req.session.user) {
     return res.redirect(req.session.user.role === 'admin' ? '/admin/dashboard' : '/dashboard');
   }
-  res.render('auth/login', { error: null });
+  // DIUBAH: langsung memanggil 'login', bukan 'auth/login'
+  res.render('login', { error: null });
 });
 
 router.post('/login', async (req, res) => {
@@ -18,13 +19,15 @@ router.post('/login', async (req, res) => {
 
     const user = await UserModel.findByEmail(email);
     if (!user) {
-      return res.render('auth/login', { error: 'Email atau password salah.' });
+      // DIUBAH: langsung memanggil 'login'
+      return res.render('login', { error: 'Email atau password salah.' });
     }
 
     // Cocokkan password yang diinput dengan hash di database
     const cocok = await bcrypt.compare(password, user.password);
     if (!cocok) {
-      return res.render('auth/login', { error: 'Email atau password salah.' });
+      // DIUBAH: langsung memanggil 'login'
+      return res.render('login', { error: 'Email atau password salah.' });
     }
 
     // Simpan data user ke session (tanpa password!)
@@ -42,7 +45,8 @@ router.post('/login', async (req, res) => {
     return res.redirect('/dashboard');
   } catch (err) {
     console.error(err);
-    res.render('auth/login', { error: 'Terjadi kesalahan server. Coba lagi.' });
+    // DIUBAH: langsung memanggil 'login'
+    res.render('login', { error: 'Terjadi kesalahan server. Coba lagi.' });
   }
 });
 
@@ -51,7 +55,8 @@ router.get('/register', (req, res) => {
   if (req.session.user) {
     return res.redirect('/dashboard');
   }
-  res.render('auth/register', { error: null });
+  // DIUBAH: langsung memanggil 'register'
+  res.render('register', { error: null });
 });
 
 router.post('/register', async (req, res) => {
@@ -60,16 +65,19 @@ router.post('/register', async (req, res) => {
 
     // Validasi sederhana
     if (!nama || !email || !password) {
-      return res.render('auth/register', { error: 'Nama, email, dan password wajib diisi.' });
+      // DIUBAH: langsung memanggil 'register'
+      return res.render('register', { error: 'Nama, email, dan password wajib diisi.' });
     }
     if (password !== konfirmasi_password) {
-      return res.render('auth/register', { error: 'Konfirmasi password tidak cocok.' });
+      // DIUBAH: langsung memanggil 'register'
+      return res.render('register', { error: 'Konfirmasi password tidak cocok.' });
     }
 
     // Cek apakah email sudah dipakai
     const userAda = await UserModel.findByEmail(email);
     if (userAda) {
-      return res.render('auth/register', { error: 'Email sudah terdaftar, silakan login.' });
+      // DIUBAH: langsung memanggil 'register'
+      return res.render('register', { error: 'Email sudah terdaftar, silakan login.' });
     }
 
     // Enkripsi password sebelum disimpan
@@ -87,7 +95,8 @@ router.post('/register', async (req, res) => {
     res.redirect('/login');
   } catch (err) {
     console.error(err);
-    res.render('auth/register', { error: 'Terjadi kesalahan server. Coba lagi.' });
+    // DIUBAH: langsung memanggil 'register'
+    res.render('register', { error: 'Terjadi kesalahan server. Coba lagi.' });
   }
 });
 
