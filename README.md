@@ -8,7 +8,7 @@ menghubungi pemilik kos lewat WhatsApp.
 
 ---
 
-## 0. Anggota Kelompok
+## 0. Anggota Kelompok 28
 - Andhika Maulana Dyas S (202451161)
 - Ahmad Fauzan (202451168)
 - Noverdo Rizqi (202451169)
