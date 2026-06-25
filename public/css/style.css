@@ -1391,3 +1391,9 @@ border-radius: 18px;
   color: #fff;
   border-color: #444;
 }
+
+/* Meningkatkan rendering font */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
