@@ -121,6 +121,15 @@
   color: #999;
 }
 
+.dark-mode .news-item p,
+.dark-mode .announcement-item p,
+.dark-mode .info-item p,
+.dark-mode .berita-item p,
+.dark-mode .card p {
+    color: #333 !important;
+    opacity: 1 !important;
+}
+
 /* ============ BASE ============ */
 
 * {
